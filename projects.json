@@ -71,5 +71,17 @@
     "url": "https://sammlung.app",
     "description": "Your digital temporary collection system.",
     "github": null
+  },
+  {
+    "name": "Lib",
+    "url": "https://lib.marc-julian.com",
+    "description": "My React component library.",
+    "github": "https://github.com/marcjulianschwarz/lib"
+  },
+  {
+    "name": "Status",
+    "url": "https://status.marc-julian.com",
+    "description": "This status service ;)",
+    "github": "https://github.com/marcjulianschwarz/status"
   }
 ]
