@@ -1,0 +1,75 @@
+[
+  {
+    "name": "marc-julian.com",
+    "url": "https://marc-julian.com",
+    "description": "My main web page on the internt",
+    "github": "https://github.com/marcjulianschwarz/marc-julian.com"
+  },
+  {
+    "name": "shots.marc-julian.com",
+    "url": "https://shots.marc-julian.com",
+    "description": "Photography"
+  },
+  {
+    "name": "Blog",
+    "url": "https://marc-julian.com/blog",
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog"
+  },
+  {
+    "name": "Test Blog",
+    "url": "https://testblog.marc-julian.com/blog",
+    "description": "Test Blog. User: marc. Password: marc.",
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog"
+  },
+  {
+    "name": "Notes",
+    "url": "https://notes.marc-julian.com",
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-notes"
+  },
+  {
+    "name": "Counter",
+    "url": "https://counter.marc-julian.com",
+    "description": "Counter app inspired by Alltagszähler",
+    "github": "https://github.com/marcjulianschwarz/counter"
+  },
+  {
+    "name": "Wizard",
+    "url": "https://wizard.marc-julian.com",
+    "description": "Companion app for the card game Wizard",
+    "github": "https://github.com/marcjulianschwarz/wizard"
+  },
+  {
+    "name": "German Coffee Wiki",
+    "url": "https://the-brew-code.de",
+    "github": null
+  },
+  {
+    "name": "Hanse Hunt",
+    "url": "https://hh.marc-julian.com",
+    "github": null
+  },
+  {
+    "name": "mdsnip.com",
+    "url": "https://mdsnip.com",
+    "description": "Create shareable markdown snippets",
+    "github": null
+  },
+  {
+    "name": "Bible Share",
+    "url": "https://bible-share.marc-julian.com",
+    "description": "",
+    "github": null
+  },
+  {
+    "name": "Make Me Fit - Calorie Tracking",
+    "url": "http://mmf.marc-julian.com",
+    "description": "",
+    "github": null
+  },
+  {
+    "name": "Sammlung",
+    "url": "https://sammlung.app",
+    "description": "Your digital temporary collection system.",
+    "github": null
+  }
+]

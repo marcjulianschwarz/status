@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project Dashboard</title>
+        <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <header></header>
+
+            <div id="projects-grid" class="projects-grid">
+                <!-- Projects will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <script>
+            // Health check function
+            async function checkHealth(url) {
+                try {
+                    // Try to fetch with no-cors mode to avoid CORS issues
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(
+                        () => controller.abort(),
+                        5000,
+                    ); // 5 second timeout
+
+                    const response = await fetch(url, {
+                        mode: "no-cors",
+                        signal: controller.signal,
+                    });
+
+                    clearTimeout(timeoutId);
+                    // With no-cors, we can't read the response, but if fetch succeeds, site is likely up
+                    return "running";
+                } catch (error) {
+                    if (error.name === "AbortError") {
+                        return "timeout";
+                    }
+                    return "down";
+                }
+            }
+
+            // Create project card
+            function createProjectCard(project) {
+                const card = document.createElement("div");
+                card.className = "project-card";
+                card.setAttribute("data-url", project.url);
+
+                // Add click handler to open the project URL
+                card.addEventListener("click", (e) => {
+                    // Don't trigger if clicking on GitHub link
+                    if (!e.target.closest(".github-link")) {
+                        window.open(project.url, "_blank");
+                    }
+                });
+
+                const statusBadge = document.createElement("div");
+                statusBadge.className = "status-badge checking";
+                statusBadge.textContent = "Checking...";
+
+                const header = document.createElement("div");
+                header.className = "project-header";
+
+                const title = document.createElement("h2");
+                title.textContent = project.name;
+
+                header.appendChild(title);
+                header.appendChild(statusBadge);
+
+                const description = document.createElement("p");
+                description.className = "description";
+                description.textContent = project.description;
+
+                const footer = document.createElement("div");
+                footer.className = "project-footer";
+
+                const urlLink = document.createElement("span");
+                urlLink.className = "url";
+                urlLink.textContent = new URL(project.url).hostname;
+
+                footer.appendChild(urlLink);
+
+                if (project.github) {
+                    const githubLink = document.createElement("a");
+                    githubLink.href = project.github;
+                    githubLink.className = "github-link";
+                    githubLink.target = "_blank";
+                    githubLink.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                    GitHub
+                `;
+                    footer.appendChild(githubLink);
+                }
+
+                card.appendChild(header);
+                card.appendChild(description);
+                card.appendChild(footer);
+
+                return { card, statusBadge };
+            }
+
+            // Load projects from JSON file
+            async function loadProjects() {
+                try {
+                    const response = await fetch("projects.json");
+                    if (!response.ok) {
+                        throw new Error("Failed to load projects");
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error("Error loading projects:", error);
+                    return [];
+                }
+            }
+
+            // Initialize dashboard
+            async function initDashboard() {
+                const grid = document.getElementById("projects-grid");
+
+                // Load projects from JSON file
+                const projects = await loadProjects();
+
+                if (projects.length === 0) {
+                    grid.innerHTML =
+                        '<p style="color: #5E5D59; text-align: center; grid-column: 1/-1;">No projects found. Please add projects to projects.json</p>';
+                    return;
+                }
+
+                // Create all cards immediately
+                for (const project of projects) {
+                    const { card, statusBadge } = createProjectCard(project);
+                    grid.appendChild(card);
+
+                    // Check health status asynchronously (non-blocking)
+                    checkHealth(project.url).then((status) => {
+                        statusBadge.classList.remove("checking");
+                        statusBadge.classList.add(status);
+
+                        if (status === "running") {
+                            statusBadge.textContent = "Running";
+                        } else if (status === "timeout") {
+                            statusBadge.textContent = "Timeout";
+                        } else {
+                            statusBadge.textContent = "Down";
+                        }
+                    });
+                }
+            }
+
+            // Load dashboard when page loads
+            document.addEventListener("DOMContentLoaded", initDashboard);
+        </script>
+    </body>
+</html>
