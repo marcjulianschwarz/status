@@ -8,7 +8,8 @@
   {
     "name": "shots.marc-julian.com",
     "url": "https://shots.marc-julian.com",
-    "description": "Photography"
+    "description": "Photography",
+    "github": "https://github.com/marcjulianschwarz/shots"
   },
   {
     "name": "Blog",
@@ -41,36 +42,28 @@
   {
     "name": "German Coffee Wiki",
     "url": "https://the-brew-code.de",
-    "github": null
-  },
-  {
-    "name": "Hanse Hunt",
-    "url": "https://hh.marc-julian.com",
-    "github": null
+    "github": "https://github.com/the-brew-code/kaffee-wiki"
   },
   {
     "name": "mdsnip.com",
     "url": "https://mdsnip.com",
     "description": "Create shareable markdown snippets",
-    "github": null
+    "github": "https://github.com/marcjulianschwarz/mdsnip"
   },
   {
-    "name": "Bible Share",
-    "url": "https://bible-share.marc-julian.com",
-    "description": "",
-    "github": null
+    "name": "Gemeindediener",
+    "url": "https://bible.marc-julian.com",
+    "description": "A church management tool. Create schedules, events, edit songs, present on multiple devices, manage users and so much more."
   },
   {
-    "name": "Make Me Fit - Calorie Tracking",
+    "name": "Make Me Fit",
     "url": "http://mmf.marc-julian.com",
-    "description": "",
-    "github": null
+    "description": "Intelligent calorie tracker. Currenlty under construction."
   },
   {
     "name": "Sammlung",
     "url": "https://sammlung.app",
-    "description": "Your digital temporary collection system.",
-    "github": null
+    "description": "Your digital temporary collection system."
   },
   {
     "name": "Lib",
