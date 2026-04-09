@@ -9,7 +9,45 @@
     </head>
     <body>
         <div class="container">
-            <header></header>
+            <header>
+                <div class="header-left">
+                    <span class="header-title">Services</span>
+                    <span class="header-count" id="header-count"
+                        >— projects</span
+                    >
+                </div>
+                <span class="header-time" id="header-time"></span>
+            </header>
+
+            <div class="summary-bar" id="summary-bar">
+                <div class="summary-item">
+                    <span class="summary-dot checking"></span>
+                    <span class="summary-label">checking</span>
+                    <span class="summary-value" id="count-checking">—</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot running"></span>
+                    <span class="summary-label">up</span>
+                    <span class="summary-value" id="count-running">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot down"></span>
+                    <span class="summary-label">down</span>
+                    <span class="summary-value" id="count-down">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot timeout"></span>
+                    <span class="summary-label">timeout</span>
+                    <span class="summary-value" id="count-timeout">0</span>
+                </div>
+            </div>
+
+            <div class="table-header">
+                <span>Service</span>
+                <span>Status</span>
+                <span>Host</span>
+                <span></span>
+            </div>
 
             <div id="projects-grid" class="projects-grid">
                 <!-- Projects will be dynamically inserted here -->
@@ -17,142 +55,178 @@
         </div>
 
         <script>
-            // Health check function
+            const counts = { checking: 0, running: 0, down: 0, timeout: 0 };
+
+            function updateSummary(from, to) {
+                if (from) counts[from]--;
+                counts[to]++;
+                document.getElementById("count-checking").textContent =
+                    counts.checking;
+                document.getElementById("count-running").textContent =
+                    counts.running;
+                document.getElementById("count-down").textContent = counts.down;
+                document.getElementById("count-timeout").textContent =
+                    counts.timeout;
+            }
+
             async function checkHealth(url) {
                 try {
-                    // Try to fetch with no-cors mode to avoid CORS issues
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(
-                        () => controller.abort(),
-                        5000,
-                    ); // 5 second timeout
-
-                    const response = await fetch(url, {
+                    const tid = setTimeout(() => controller.abort(), 5000);
+                    await fetch(url, {
                         mode: "no-cors",
                         signal: controller.signal,
                     });
-
-                    clearTimeout(timeoutId);
-                    // With no-cors, we can't read the response, but if fetch succeeds, site is likely up
+                    clearTimeout(tid);
                     return "running";
-                } catch (error) {
-                    if (error.name === "AbortError") {
-                        return "timeout";
-                    }
-                    return "down";
+                } catch (e) {
+                    return e.name === "AbortError" ? "timeout" : "down";
                 }
             }
 
-            // Create project card
+            const GITHUB_ICON = `<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`;
+
             function createProjectCard(project) {
                 const card = document.createElement("div");
                 card.className = "project-card";
-                card.setAttribute("data-url", project.url);
 
-                // Add click handler to open the project URL
                 card.addEventListener("click", (e) => {
-                    // Don't trigger if clicking on GitHub link
                     if (!e.target.closest(".github-link")) {
                         window.open(project.url, "_blank");
                     }
                 });
 
-                const statusBadge = document.createElement("div");
-                statusBadge.className = "status-badge checking";
-                statusBadge.textContent = "Checking...";
+                // Col 1: name + description
+                const main = document.createElement("div");
+                main.className = "project-main";
 
-                const header = document.createElement("div");
-                header.className = "project-header";
+                const name = document.createElement("span");
+                name.className = "project-name";
+                name.textContent = project.name;
 
-                const title = document.createElement("h2");
-                title.textContent = project.name;
+                const desc = document.createElement("span");
+                desc.className = "project-description";
+                desc.textContent =
+                    project.description || new URL(project.url).hostname;
 
-                header.appendChild(title);
-                header.appendChild(statusBadge);
+                main.appendChild(name);
+                main.appendChild(desc);
 
-                const description = document.createElement("p");
-                description.className = "description";
-                description.textContent = project.description;
+                // Col 2: status
+                const statusCell = document.createElement("div");
+                statusCell.className = "status-cell";
 
-                const footer = document.createElement("div");
-                footer.className = "project-footer";
+                const dot = document.createElement("span");
+                dot.className = "status-indicator checking";
 
-                const urlLink = document.createElement("span");
-                urlLink.className = "url";
-                urlLink.textContent = new URL(project.url).hostname;
+                const label = document.createElement("span");
+                label.className = "status-label";
+                label.textContent = "…";
 
-                footer.appendChild(urlLink);
+                statusCell.appendChild(dot);
+                statusCell.appendChild(label);
 
-                if (project.github) {
-                    const githubLink = document.createElement("a");
-                    githubLink.href = project.github;
-                    githubLink.className = "github-link";
-                    githubLink.target = "_blank";
-                    githubLink.innerHTML = `
-                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                    </svg>
-                    GitHub
-                `;
-                    footer.appendChild(githubLink);
+                // Col 3: url
+                const urlCell = document.createElement("div");
+                urlCell.className = "url-cell";
+                try {
+                    urlCell.textContent = new URL(project.url).hostname;
+                } catch {
+                    urlCell.textContent = project.url;
                 }
 
-                card.appendChild(header);
-                card.appendChild(description);
-                card.appendChild(footer);
+                // Col 4: github
+                const ghCell = document.createElement("div");
+                if (project.github) {
+                    const a = document.createElement("a");
+                    a.href = project.github;
+                    a.className = "github-link";
+                    a.target = "_blank";
+                    a.title = "GitHub";
+                    a.innerHTML = GITHUB_ICON;
+                    ghCell.appendChild(a);
+                }
 
-                return { card, statusBadge };
+                // Arrow hint
+                const arrow = document.createElement("span");
+                arrow.className = "row-arrow";
+                arrow.textContent = "↗";
+
+                card.appendChild(main);
+                card.appendChild(statusCell);
+                card.appendChild(urlCell);
+                card.appendChild(ghCell);
+                card.appendChild(arrow);
+
+                return { card, dot, label };
             }
 
-            // Load projects from JSON file
             async function loadProjects() {
                 try {
-                    const response = await fetch("projects.json");
-                    if (!response.ok) {
-                        throw new Error("Failed to load projects");
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error("Error loading projects:", error);
+                    const r = await fetch("projects.json");
+                    if (!r.ok) throw new Error();
+                    return await r.json();
+                } catch {
                     return [];
                 }
             }
 
-            // Initialize dashboard
             async function initDashboard() {
                 const grid = document.getElementById("projects-grid");
-
-                // Load projects from JSON file
                 const projects = await loadProjects();
+
+                document.getElementById("header-count").textContent =
+                    `${projects.length} project${projects.length !== 1 ? "s" : ""}`;
+
+                const now = new Date();
+                document.getElementById("header-time").textContent =
+                    `Last checked ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
 
                 if (projects.length === 0) {
                     grid.innerHTML =
-                        '<p style="color: #5E5D59; text-align: center; grid-column: 1/-1;">No projects found. Please add projects to projects.json</p>';
+                        '<p style="padding:1rem;color:#8a8880;font-size:0.8rem;">No projects found.</p>';
                     return;
                 }
 
-                // Create all cards immediately
-                for (const project of projects) {
-                    const { card, statusBadge } = createProjectCard(project);
-                    grid.appendChild(card);
+                counts.checking = projects.length;
+                updateSummary(null, null); // initial render
+                document.getElementById("count-checking").textContent =
+                    projects.length;
 
-                    // Check health status asynchronously (non-blocking)
-                    checkHealth(project.url).then((status) => {
-                        statusBadge.classList.remove("checking");
-                        statusBadge.classList.add(status);
+                const SECTION_ORDER = ["Apps", "Utility", "Content"];
+                const grouped = {};
+                for (const p of projects) {
+                    const s = p.section ?? "Other";
+                    (grouped[s] = grouped[s] ?? []).push(p);
+                }
 
-                        if (status === "running") {
-                            statusBadge.textContent = "Running";
-                        } else if (status === "timeout") {
-                            statusBadge.textContent = "Timeout";
-                        } else {
-                            statusBadge.textContent = "Down";
-                        }
-                    });
+                for (const section of SECTION_ORDER) {
+                    if (!grouped[section]) continue;
+
+                    const heading = document.createElement("div");
+                    heading.className = "section-heading";
+                    heading.textContent = section;
+                    grid.appendChild(heading);
+
+                    for (const project of grouped[section]) {
+                        const { card, dot, label } = createProjectCard(project);
+                        grid.appendChild(card);
+
+                        checkHealth(project.url).then((status) => {
+                            dot.className = `status-indicator ${status}`;
+                            label.className = `status-label ${status}`;
+                            const labels = {
+                                running: "Up",
+                                down: "Down",
+                                timeout: "Timeout",
+                            };
+                            label.textContent = labels[status] ?? status;
+                            updateSummary("checking", status);
+                        });
+                    }
                 }
             }
 
-            // Load dashboard when page loads
             document.addEventListener("DOMContentLoaded", initDashboard);
         </script>
     </body>

@@ -3,78 +3,104 @@
     "name": "marc-julian.com",
     "url": "https://marc-julian.com",
     "description": "My main web page on the internt",
-    "github": "https://github.com/marcjulianschwarz/marc-julian.com"
+    "github": "https://github.com/marcjulianschwarz/marc-julian.com",
+    "section": "Content"
   },
   {
     "name": "shots.marc-julian.com",
     "url": "https://shots.marc-julian.com",
     "description": "Photography",
-    "github": "https://github.com/marcjulianschwarz/shots"
+    "github": "https://github.com/marcjulianschwarz/shots",
+    "section": "Content"
   },
   {
     "name": "Blog",
     "url": "https://marc-julian.com/blog",
-    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog"
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog",
+    "section": "Content"
   },
   {
     "name": "Test Blog",
     "url": "https://testblog.marc-julian.com/blog",
     "description": "Test Blog. User: marc. Password: marc.",
-    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog"
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog",
+    "section": "Content"
   },
   {
     "name": "Notes",
     "url": "https://notes.marc-julian.com",
-    "github": "https://github.com/marcjulianschwarz/obsidian-vault-notes"
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-notes",
+    "section": "Content"
+  },
+  {
+    "name": "German Coffee Wiki",
+    "url": "https://the-brew-code.de",
+    "github": "https://github.com/the-brew-code/kaffee-wiki",
+    "section": "Content"
   },
   {
     "name": "Counter",
     "url": "https://counter.marc-julian.com",
     "description": "Counter app inspired by Alltagszähler",
-    "github": "https://github.com/marcjulianschwarz/counter"
+    "github": "https://github.com/marcjulianschwarz/counter",
+    "section": "Apps"
   },
   {
     "name": "Wizard",
     "url": "https://wizard.marc-julian.com",
     "description": "Companion app for the card game Wizard",
-    "github": "https://github.com/marcjulianschwarz/wizard"
+    "github": "https://github.com/marcjulianschwarz/wizard",
+    "section": "Apps"
   },
   {
-    "name": "German Coffee Wiki",
-    "url": "https://the-brew-code.de",
-    "github": "https://github.com/the-brew-code/kaffee-wiki"
+    "name": "Gemeindediener",
+    "url": "https://bible.marc-julian.com",
+    "description": "A church management tool. Create schedules, events, edit songs, present on multiple devices, manage users and so much more.",
+    "section": "Apps"
+  },
+  {
+    "name": "Sammlung",
+    "url": "https://sammlung.app",
+    "description": "Your digital temporary collection system.",
+    "section": "Apps"
+  },
+  {
+    "name": "recipes.marc-julian.com",
+    "url": "https://recipes.marc-julian.com",
+    "description": "Recipes",
+    "section": "Content"
+  },
+  {
+    "name": "tools.marc-julian.com",
+    "url": "https://tools.marc-julian.com",
+    "description": "Tools",
+    "section": "Utility"
+  },
+  {
+    "name": "qr.marc-julian.com",
+    "url": "https://qr.marc-julian.com",
+    "description": "QR code generator",
+    "section": "Utility"
   },
   {
     "name": "mdsnip.com",
     "url": "https://mdsnip.com",
     "description": "Create shareable markdown snippets",
-    "github": "https://github.com/marcjulianschwarz/mdsnip"
-  },
-  {
-    "name": "Gemeindediener",
-    "url": "https://bible.marc-julian.com",
-    "description": "A church management tool. Create schedules, events, edit songs, present on multiple devices, manage users and so much more."
-  },
-  {
-    "name": "Make Me Fit",
-    "url": "http://mmf.marc-julian.com",
-    "description": "Intelligent calorie tracker. Currenlty under construction."
-  },
-  {
-    "name": "Sammlung",
-    "url": "https://sammlung.app",
-    "description": "Your digital temporary collection system."
+    "github": "https://github.com/marcjulianschwarz/mdsnip",
+    "section": "Utility"
   },
   {
     "name": "Lib",
     "url": "https://lib.marc-julian.com",
     "description": "My React component library.",
-    "github": "https://github.com/marcjulianschwarz/lib"
+    "github": "https://github.com/marcjulianschwarz/lib",
+    "section": "Utility"
   },
   {
     "name": "Status",
     "url": "https://status.marc-julian.com",
     "description": "This status service ;)",
-    "github": "https://github.com/marcjulianschwarz/status"
+    "github": "https://github.com/marcjulianschwarz/status",
+    "section": "Utility"
   }
 ]
