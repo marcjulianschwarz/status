@@ -7,9 +7,9 @@
     "section": "Content"
   },
   {
-    "name": "shots.marc-julian.com",
+    "name": "Photography",
     "url": "https://shots.marc-julian.com",
-    "description": "Photography",
+    "description": "Photography on shots.marc-julian.com",
     "github": "https://github.com/marcjulianschwarz/shots",
     "section": "Content"
   },
@@ -22,7 +22,7 @@
   {
     "name": "Test Blog",
     "url": "https://testblog.marc-julian.com/blog",
-    "description": "Test Blog. User: marc. Password: marc.",
+    "description": "Test Blog",
     "github": "https://github.com/marcjulianschwarz/obsidian-vault-blog",
     "section": "Content"
   },
@@ -33,7 +33,8 @@
     "section": "Content"
   },
   {
-    "name": "German Coffee Wiki",
+    "name": "The Brew Code",
+    "description": "German wiki all about coffee",
     "url": "https://the-brew-code.de",
     "github": "https://github.com/the-brew-code/kaffee-wiki",
     "section": "Content"
@@ -56,34 +57,39 @@
     "name": "Gemeindediener",
     "url": "https://bible.marc-julian.com",
     "description": "A church management tool. Create schedules, events, edit songs, present on multiple devices, manage users and so much more.",
-    "section": "Apps"
+    "section": "Apps",
+    "github": "https://github.com/marcjulianschwarz/gemeindediener"
   },
   {
-    "name": "Sammlung",
+    "name": "Sammlung - For Knowledge Workers",
     "url": "https://sammlung.app",
-    "description": "Your digital temporary collection system.",
-    "section": "Apps"
+    "description": "Intelligent temporary content storage system.",
+    "section": "Apps",
+    "github": "https://github.com/marcjulianschwarz/app-support-sammlung/issues"
   },
   {
-    "name": "recipes.marc-julian.com",
+    "name": "Recipes",
     "url": "https://recipes.marc-julian.com",
-    "description": "Recipes",
-    "section": "Content"
+    "description": "A collection of recipes",
+    "section": "Content",
+    "github": "https://github.com/marcjulianschwarz/obsidian-vault-recipes"
   },
   {
-    "name": "tools.marc-julian.com",
+    "name": "Tools",
     "url": "https://tools.marc-julian.com",
-    "description": "Tools",
-    "section": "Utility"
+    "description": "A collection of useful tools, mostly dev tools.",
+    "section": "Utility",
+    "github": "https://github.com/marcjulianschwarz/tools"
   },
   {
-    "name": "qr.marc-julian.com",
+    "name": "QR Code",
     "url": "https://qr.marc-julian.com",
-    "description": "QR code generator",
-    "section": "Utility"
+    "description": "QR code redirection service",
+    "section": "Utility",
+    "github": "https://github.com/marcjulianschwarz/qr"
   },
   {
-    "name": "mdsnip.com",
+    "name": "MDsnip",
     "url": "https://mdsnip.com",
     "description": "Create shareable markdown snippets",
     "github": "https://github.com/marcjulianschwarz/mdsnip",

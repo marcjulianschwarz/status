@@ -42,6 +42,18 @@
                 </div>
             </div>
 
+            <div class="toolbar">
+                <input
+                    type="search"
+                    id="search-input"
+                    class="search-input"
+                    placeholder="Filter services…"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <button id="sort-btn" class="sort-btn" title="Sort A–Z">A–Z</button>
+            </div>
+
             <div class="table-header">
                 <span>Service</span>
                 <span>Status</span>
@@ -60,23 +72,17 @@
             function updateSummary(from, to) {
                 if (from) counts[from]--;
                 counts[to]++;
-                document.getElementById("count-checking").textContent =
-                    counts.checking;
-                document.getElementById("count-running").textContent =
-                    counts.running;
+                document.getElementById("count-checking").textContent = counts.checking;
+                document.getElementById("count-running").textContent = counts.running;
                 document.getElementById("count-down").textContent = counts.down;
-                document.getElementById("count-timeout").textContent =
-                    counts.timeout;
+                document.getElementById("count-timeout").textContent = counts.timeout;
             }
 
             async function checkHealth(url) {
                 try {
                     const controller = new AbortController();
                     const tid = setTimeout(() => controller.abort(), 5000);
-                    await fetch(url, {
-                        mode: "no-cors",
-                        signal: controller.signal,
-                    });
+                    await fetch(url, { mode: "no-cors", signal: controller.signal });
                     clearTimeout(tid);
                     return "running";
                 } catch (e) {
@@ -96,7 +102,6 @@
                     }
                 });
 
-                // Col 1: name + description
                 const main = document.createElement("div");
                 main.className = "project-main";
 
@@ -106,13 +111,11 @@
 
                 const desc = document.createElement("span");
                 desc.className = "project-description";
-                desc.textContent =
-                    project.description || new URL(project.url).hostname;
+                desc.textContent = project.description || new URL(project.url).hostname;
 
                 main.appendChild(name);
                 main.appendChild(desc);
 
-                // Col 2: status
                 const statusCell = document.createElement("div");
                 statusCell.className = "status-cell";
 
@@ -126,7 +129,6 @@
                 statusCell.appendChild(dot);
                 statusCell.appendChild(label);
 
-                // Col 3: url
                 const urlCell = document.createElement("div");
                 urlCell.className = "url-cell";
                 try {
@@ -135,7 +137,6 @@
                     urlCell.textContent = project.url;
                 }
 
-                // Col 4: github
                 const ghCell = document.createElement("div");
                 if (project.github) {
                     const a = document.createElement("a");
@@ -147,7 +148,6 @@
                     ghCell.appendChild(a);
                 }
 
-                // Arrow hint
                 const arrow = document.createElement("span");
                 arrow.className = "row-arrow";
                 arrow.textContent = "↗";
@@ -171,60 +171,102 @@
                 }
             }
 
-            async function initDashboard() {
+            // Map project -> { card, dot, label } so we can re-render without re-fetching
+            const projectMeta = new Map();
+            let allProjects = [];
+            let sortAlpha = false;
+
+            function renderGrid(query) {
                 const grid = document.getElementById("projects-grid");
-                const projects = await loadProjects();
+                const q = query.trim().toLowerCase();
+
+                const filtered = allProjects.filter((p) =>
+                    !q ||
+                    p.name.toLowerCase().includes(q) ||
+                    (p.description || "").toLowerCase().includes(q) ||
+                    new URL(p.url).hostname.toLowerCase().includes(q)
+                );
+
+                grid.innerHTML = "";
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<p style="padding:1rem;color:#8a8880;font-size:0.85rem;">No results.</p>';
+                    return;
+                }
+
+                if (sortAlpha) {
+                    const sorted = [...filtered].sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    for (const project of sorted) {
+                        grid.appendChild(projectMeta.get(project).card);
+                    }
+                } else {
+                    const SECTION_ORDER = ["Apps", "Utility", "Content"];
+                    const grouped = {};
+                    for (const p of filtered) {
+                        const s = p.section ?? "Other";
+                        (grouped[s] = grouped[s] ?? []).push(p);
+                    }
+                    for (const section of SECTION_ORDER) {
+                        if (!grouped[section]) continue;
+                        const heading = document.createElement("div");
+                        heading.className = "section-heading";
+                        heading.textContent = section;
+                        grid.appendChild(heading);
+                        for (const p of grouped[section]) {
+                            grid.appendChild(projectMeta.get(p).card);
+                        }
+                    }
+                }
+            }
+
+            async function initDashboard() {
+                allProjects = await loadProjects();
 
                 document.getElementById("header-count").textContent =
-                    `${projects.length} project${projects.length !== 1 ? "s" : ""}`;
+                    `${allProjects.length} project${allProjects.length !== 1 ? "s" : ""}`;
 
                 const now = new Date();
                 document.getElementById("header-time").textContent =
                     `Last checked ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
 
-                if (projects.length === 0) {
-                    grid.innerHTML =
-                        '<p style="padding:1rem;color:#8a8880;font-size:0.8rem;">No projects found.</p>';
+                if (allProjects.length === 0) {
+                    document.getElementById("projects-grid").innerHTML =
+                        '<p style="padding:1rem;color:#8a8880;font-size:0.85rem;">No projects found.</p>';
                     return;
                 }
 
-                counts.checking = projects.length;
-                updateSummary(null, null); // initial render
-                document.getElementById("count-checking").textContent =
-                    projects.length;
+                counts.checking = allProjects.length;
+                document.getElementById("count-checking").textContent = allProjects.length;
 
-                const SECTION_ORDER = ["Apps", "Utility", "Content"];
-                const grouped = {};
-                for (const p of projects) {
-                    const s = p.section ?? "Other";
-                    (grouped[s] = grouped[s] ?? []).push(p);
+                // Build all cards up front
+                for (const project of allProjects) {
+                    const meta = createProjectCard(project);
+                    projectMeta.set(project, meta);
+
+                    checkHealth(project.url).then((status) => {
+                        meta.dot.className = `status-indicator ${status}`;
+                        meta.label.className = `status-label ${status}`;
+                        const labels = { running: "Up", down: "Down", timeout: "Timeout" };
+                        meta.label.textContent = labels[status] ?? status;
+                        updateSummary("checking", status);
+                    });
                 }
 
-                for (const section of SECTION_ORDER) {
-                    if (!grouped[section]) continue;
+                renderGrid("");
 
-                    const heading = document.createElement("div");
-                    heading.className = "section-heading";
-                    heading.textContent = section;
-                    grid.appendChild(heading);
+                const searchInput = document.getElementById("search-input");
+                searchInput.addEventListener("input", () =>
+                    renderGrid(searchInput.value)
+                );
 
-                    for (const project of grouped[section]) {
-                        const { card, dot, label } = createProjectCard(project);
-                        grid.appendChild(card);
-
-                        checkHealth(project.url).then((status) => {
-                            dot.className = `status-indicator ${status}`;
-                            label.className = `status-label ${status}`;
-                            const labels = {
-                                running: "Up",
-                                down: "Down",
-                                timeout: "Timeout",
-                            };
-                            label.textContent = labels[status] ?? status;
-                            updateSummary("checking", status);
-                        });
-                    }
-                }
+                const sortBtn = document.getElementById("sort-btn");
+                sortBtn.addEventListener("click", () => {
+                    sortAlpha = !sortAlpha;
+                    sortBtn.classList.toggle("active", sortAlpha);
+                    renderGrid(searchInput.value);
+                });
             }
 
             document.addEventListener("DOMContentLoaded", initDashboard);
