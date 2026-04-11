@@ -16,6 +16,12 @@ class Service(BaseModel):
     url: str
     type: ServiceType
     description: str = ""
+    github: str = ""
+    port: int | None = None
+    internal_port: int | None = None
+    service_kind: str = ""
+    port_range: str = ""
+    container_name: str = ""
 
     model_config: ClassVar[ConfigDict] = ConfigDict(
         alias_generator=to_lower_camel, populate_by_name=True, from_attributes=True

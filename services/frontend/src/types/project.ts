@@ -6,6 +6,12 @@ export type Service = {
   url: string;
   type: ServiceType;
   description: string;
+  github: string;
+  port: number | null;
+  internalPort: number | null;
+  serviceKind: string;
+  portRange: string;
+  containerName: string;
 };
 
 export type HealthStatus = "healthy" | "unhealthy" | "unknown";
