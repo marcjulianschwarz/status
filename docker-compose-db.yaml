@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=status
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=your_secure_password
+    ports:
+      - "8053:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

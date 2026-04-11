@@ -1,0 +1,21 @@
+{
+  "include": [""],
+
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "src/experimental",
+    "src/typestubs"
+  ],
+
+  "defineConstant": {
+    "DEBUG": true
+  },
+
+  "reportMissingImports": "error",
+  "reportMissingTypeStubs": false,
+  "reportUnknownMemberType": false,
+
+  "pythonVersion": "3.11",
+  "pythonPlatform": "Linux"
+}

@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: ./services/backend
+    restart: always
+    env_file: .env
+    ports:
+      - "8050:8000"
+
+  frontend:
+    build:
+      context: ./services/frontend
+      args:
+        - VITE_PUBLIC_BACKEND_URL=${BACKEND_URL}
+    restart: always
+    ports:
+      - "8051:3000"
+    depends_on:
+      - backend
