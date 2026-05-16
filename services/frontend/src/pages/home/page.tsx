@@ -114,51 +114,81 @@ function ServiceModal({
         {/* Body */}
         <div className="p-5 overflow-y-auto flex-1 space-y-4">
           {service.description && (
-            <p className="font-mono text-xs text-zinc-500">{service.description}</p>
+            <p className="font-mono text-xs text-zinc-500">
+              {service.description}
+            </p>
           )}
 
           {/* Stats grid */}
           <div className="grid grid-cols-2 gap-2">
             {service.serviceKind && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Type</div>
-                <div className="font-mono text-xs text-zinc-800">{service.serviceKind}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Type
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {service.serviceKind}
+                </div>
               </div>
             )}
             {service.portRange && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Port Range</div>
-                <div className="font-mono text-xs text-zinc-800">{service.portRange}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Port Range
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {service.portRange}
+                </div>
               </div>
             )}
             {service.containerName && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Container</div>
-                <div className="font-mono text-xs text-zinc-800">{service.containerName}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Container
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {service.containerName}
+                </div>
               </div>
             )}
             {service.port != null && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Port</div>
-                <div className="font-mono text-xs text-zinc-800">{service.port}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Port
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {service.port}
+                </div>
               </div>
             )}
             {service.internalPort != null && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Internal Port</div>
-                <div className="font-mono text-xs text-zinc-800">{service.internalPort}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Internal Port
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {service.internalPort}
+                </div>
               </div>
             )}
             {healthData?.responseTimeMs != null && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">Latency</div>
-                <div className="font-mono text-xs text-zinc-800">{healthData.responseTimeMs}ms</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  Latency
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {healthData.responseTimeMs}ms
+                </div>
               </div>
             )}
             {healthData?.statusCode != null && (
               <div className="bg-zinc-50 rounded-lg px-3 py-2">
-                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">HTTP Code</div>
-                <div className="font-mono text-xs text-zinc-800">{healthData.statusCode}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider mb-0.5">
+                  HTTP Code
+                </div>
+                <div className="font-mono text-xs text-zinc-800">
+                  {healthData.statusCode}
+                </div>
               </div>
             )}
           </div>
@@ -166,19 +196,25 @@ function ServiceModal({
           {/* Health endpoint details */}
           {h && (
             <div className="bg-zinc-50 rounded-lg px-3 py-2 space-y-1">
-              <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1">Health</div>
+              <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1">
+                Health
+              </div>
               <div className="flex gap-4 flex-wrap">
                 <span className="font-mono text-xs text-zinc-600">
-                  <span className="text-zinc-400">up</span> {formatUptime(h.uptimeSeconds)}
+                  <span className="text-zinc-400">up</span>{" "}
+                  {formatUptime(h.uptimeSeconds)}
                 </span>
                 <span className="font-mono text-xs text-zinc-600">
-                  <span className="text-zinc-400">v</span>{h.version}
+                  <span className="text-zinc-400">v</span>
+                  {h.version}
                 </span>
                 <span className="font-mono text-xs text-zinc-600">
                   <span className="text-zinc-400">env</span> {h.environment}
                 </span>
                 <span className="font-mono text-xs text-zinc-600">
-                  <span className="text-zinc-400">db</span> {h.database.poolAvailable}/{h.database.poolMax} avail · {h.database.status}
+                  <span className="text-zinc-400">db</span>{" "}
+                  {h.database.poolAvailable}/{h.database.poolMax} avail ·{" "}
+                  {h.database.status}
                 </span>
               </div>
             </div>
@@ -187,7 +223,9 @@ function ServiceModal({
           {/* Error */}
           {healthData?.error && (
             <div className="bg-red-50 rounded-lg px-3 py-2">
-              <span className="font-mono text-xs text-red-500">{healthData.error}</span>
+              <span className="font-mono text-xs text-red-500">
+                {healthData.error}
+              </span>
             </div>
           )}
         </div>
@@ -337,7 +375,9 @@ function PortRangesTab({ services }: { services: ServiceWithHealth[] }) {
     {},
   );
 
-  const sortedRanges = Object.keys(grouped).sort((a, b) => Number(a) - Number(b));
+  const sortedRanges = Object.keys(grouped).sort(
+    (a, b) => Number(a) - Number(b),
+  );
 
   if (sortedRanges.length === 0) {
     return (
@@ -374,7 +414,9 @@ function PortRangesTab({ services }: { services: ServiceWithHealth[] }) {
               <span className="font-mono text-xs font-semibold text-zinc-700 uppercase tracking-wider">
                 Range {range}xx
               </span>
-              <span className="font-mono text-xs text-zinc-400">{portLabel}</span>
+              <span className="font-mono text-xs text-zinc-400">
+                {portLabel}
+              </span>
             </div>
 
             {/* Services in range */}
@@ -412,26 +454,75 @@ function PortRangesTab({ services }: { services: ServiceWithHealth[] }) {
 
 const DEMO_SERVICES: ServiceWithHealth[] = [
   {
-    id: "demo-api", name: "Demo API", url: "https://example.com/api", type: "health_endpoint",
-    description: "A sample REST API", github: "", serviceKind: "FastAPI",
-    portRange: "90", port: 8090, internalPort: 8000, containerName: "demo-api-1",
-    healthData: { serviceId: "demo-api", status: "healthy", statusCode: 200, responseTimeMs: 42, error: null,
-      health: { status: "ok", uptimeSeconds: 86400, environment: "dev", version: "1.0.0",
-        database: { status: "ok", poolMin: 2, poolMax: 10, poolAvailable: 8 } } },
+    id: "demo-api",
+    name: "Demo API",
+    url: "https://example.com/api",
+    type: "health_endpoint",
+    description: "A sample REST API",
+    github: "",
+    serviceKind: "FastAPI",
+    portRange: "90",
+    port: 8090,
+    internalPort: 8000,
+    containerName: "demo-api-1",
+    healthData: {
+      serviceId: "demo-api",
+      status: "healthy",
+      statusCode: 200,
+      responseTimeMs: 42,
+      error: null,
+      health: {
+        status: "ok",
+        uptimeSeconds: 86400,
+        environment: "dev",
+        version: "1.0.0",
+        database: { status: "ok", poolMin: 2, poolMax: 10, poolAvailable: 8 },
+      },
+    },
     loading: false,
   },
   {
-    id: "demo-frontend", name: "Demo Frontend", url: "https://example.com", type: "ping",
-    description: "A sample frontend", github: "", serviceKind: "Vite",
-    portRange: "90", port: 8091, internalPort: 3000, containerName: "demo-frontend-1",
-    healthData: { serviceId: "demo-frontend", status: "healthy", statusCode: 200, responseTimeMs: 18, error: null, health: null },
+    id: "demo-frontend",
+    name: "Demo Frontend",
+    url: "https://example.com",
+    type: "ping",
+    description: "A sample frontend",
+    github: "",
+    serviceKind: "Vite",
+    portRange: "90",
+    port: 8091,
+    internalPort: 3000,
+    containerName: "demo-frontend-1",
+    healthData: {
+      serviceId: "demo-frontend",
+      status: "healthy",
+      statusCode: 200,
+      responseTimeMs: 18,
+      error: null,
+      health: null,
+    },
     loading: false,
   },
   {
-    id: "demo-broken", name: "Demo Broken", url: "https://example.com/broken", type: "ping",
-    description: "A sample failing service", github: "", serviceKind: "Node",
-    portRange: "91", port: 8910, internalPort: 3000, containerName: "demo-broken-1",
-    healthData: { serviceId: "demo-broken", status: "unhealthy", statusCode: 503, responseTimeMs: null, error: "Connection refused", health: null },
+    id: "demo-broken",
+    name: "Demo Broken",
+    url: "https://example.com/broken",
+    type: "ping",
+    description: "A sample failing service",
+    github: "",
+    serviceKind: "Node",
+    portRange: "91",
+    port: 8910,
+    internalPort: 3000,
+    containerName: "demo-broken-1",
+    healthData: {
+      serviceId: "demo-broken",
+      status: "unhealthy",
+      statusCode: 503,
+      responseTimeMs: null,
+      error: "Connection refused",
+      health: null,
+    },
     loading: false,
   },
 ];
@@ -597,16 +688,18 @@ export default function HomePage() {
                 </div>
               ) : (
                 filtered.map((s) => (
-                  <ServiceRow key={s.id} service={s} onClick={() => setSelected(s)} />
+                  <ServiceRow
+                    key={s.id}
+                    service={s}
+                    onClick={() => setSelected(s)}
+                  />
                 ))
               )}
             </div>
           </>
         )}
 
-        {tab === "ports" && (
-          <PortRangesTab services={displayed} />
-        )}
+        {tab === "ports" && <PortRangesTab services={displayed} />}
       </div>
 
       {selected && (
