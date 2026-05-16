@@ -229,6 +229,22 @@ _SERVICES: list[Service] = [
         github="https://github.com/marcjulianschwarz/status",
         service_kind="Vite",
     ),
+    Service(
+        id="phoenix",
+        name="Phoenix",
+        url="https://phoenix.marc-julian.com",
+        type=ServiceType.ping,
+        description="Phoenix",
+        service_kind="",
+    ),
+    Service(
+        id="portainer",
+        name="Portainer",
+        url="https://portainer.marc-julian.com",
+        type=ServiceType.ping,
+        description="Portainer",
+        service_kind="",
+    ),
 ]
 
 
