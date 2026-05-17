@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 
+from auth.auth_router import get_current_user
 from services.services_model import HealthData, Service
 from services.services_service import ServicesService, get_services_service
 
@@ -11,6 +12,7 @@ router = APIRouter(prefix="/services", tags=["Services"])
 @router.get("")
 def get_all_services(
     services_service: Annotated[ServicesService, Depends(get_services_service)],
+    _: Annotated[str, Depends(get_current_user)],
 ) -> list[Service]:
     return services_service.get_all_services()
 
@@ -19,6 +21,7 @@ def get_all_services(
 def get_service_health(
     service_id: str,
     services_service: Annotated[ServicesService, Depends(get_services_service)],
+    _: Annotated[str, Depends(get_current_user)],
 ) -> HealthData:
     health = services_service.get_health(service_id)
     if health is None:

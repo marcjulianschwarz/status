@@ -245,6 +245,16 @@ _SERVICES: list[Service] = [
         description="Portainer",
         service_kind="",
     ),
+    Service(
+        id="secrets",
+        name="Secrets",
+        url="https://secrets.marc-julian.com/",
+        type=ServiceType.ping,
+        description="Secrets",
+        service_kind="",
+        port_range="90",
+        port=8090,
+    ),
 ]
 
 

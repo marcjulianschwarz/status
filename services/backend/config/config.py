@@ -1,11 +1,21 @@
 import os
 from typing import ClassVar
 
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from config.infisical import inject_infisical_secrets
 
 # Used to manually switch environments (e.g. to testing)
 _environment = os.getenv("ENVIRONMENT")
 _env_files = (".env", f".env.{_environment}") if _environment else ".env"
+
+# Load .env early so Infisical credentials are available before Settings is built
+_ = load_dotenv(".env")
+if _environment:
+    _ = load_dotenv(f".env.{_environment}")
+
+inject_infisical_secrets(_environment)
 
 
 class Settings(BaseSettings):
@@ -17,6 +27,12 @@ class Settings(BaseSettings):
 
     # Health endpoint
     HEALTH_API_KEY: str
+
+    # Auth
+    ADMIN_USERNAME: str
+    ADMIN_PASSWORD: str
+    JWT_SECRET: str
+    JWT_EXPIRE_HOURS: int = 24
 
     # URLs
     FRONTEND_URL: str = "http://localhost:3000"

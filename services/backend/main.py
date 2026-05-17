@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+import auth.auth_router
 import services.services_router
 from config.config import settings
 from logging_config import MyLogger, create_logger, setup_logging
@@ -68,6 +69,7 @@ app.add_middleware(
 )
 
 
+app.include_router(auth.auth_router.router)
 app.include_router(services.services_router.router)
 
 
